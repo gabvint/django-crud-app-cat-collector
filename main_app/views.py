@@ -14,7 +14,7 @@ class Cat:
 # Create a list of Cat instances
 cats = [
     Cat('Lolo', 'tabby', 'Kinda rude.', 3),
-    Cat('Sachi', 'tortoiseshell', 'Looks like a turtle.', 0),
+    Cat('Bambi', 'tortoiseshell', 'Looks like a turtle.', 0),
     Cat('Fancy', 'bombay', 'Happy fluff ball.', 4),
     Cat('Bonk', 'selkirk rex', 'Meows loudly.', 6)
 ]
