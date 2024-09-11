@@ -12,5 +12,5 @@ class Cat(models.Model):
         return self.name
     
     def get_absolute_url(self):
-        return reverse('cat_detail', kwargs={'cat_id': self.id})
+        return reverse('cat-detail', kwargs={'cat_id': self.id})
     
