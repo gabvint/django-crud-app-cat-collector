@@ -1,7 +1,6 @@
 from django.shortcuts import render
-
-# Import HttpResponse to send text-based responses
 from django.http import HttpResponse
+from .models import Cat
 
 
 class Cat:
@@ -28,4 +27,5 @@ def about(request):
     return render(request, 'about.html')
 
 def cat_index(request):
+    cats = Cat.objects.all()
     return render(request, 'cats/index.html', {'cats': cats})
