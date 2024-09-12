@@ -9,12 +9,12 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 class CatCreate(CreateView):
     model = Cat
     fields = '__all__'
-    success_url = '/cats/'
+    # success_url = '/cats/'
 
 
 class CatUpdate(UpdateView):
     model = Cat
-    fields = '__all__'
+    fields = ['breed', 'description', 'age']
 
 
 class CatDelete(DeleteView):
