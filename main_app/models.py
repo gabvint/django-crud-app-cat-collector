@@ -46,5 +46,5 @@ class Toy(models.Model):
         return self.name
     
     def get_absolute_url(self):
-        return reverse("toy_detail", kwargs={"pk": self.id})
+        return reverse("toy-detail", kwargs={"pk": self.id})
     
