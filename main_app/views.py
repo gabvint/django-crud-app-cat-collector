@@ -3,9 +3,10 @@ from django.http import HttpResponse
 from django.views.generic.edit import CreateView
 from .models import Cat, Toy
 from .forms import FeedingForm
-# Add UdpateView & DeleteView
+
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView, DetailView 
+from django.contrib.auth.views import LoginView
 
 
 class CatCreate(CreateView):
