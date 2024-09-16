@@ -7,12 +7,20 @@ from .forms import FeedingForm
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView, DetailView 
 from django.contrib.auth.views import LoginView
+from django.contrib.auth import login
+from django.contrib.auth.forms import UserCreationForm
 
 
 class CatCreate(CreateView):
     model = Cat
     fields = ['name', 'breed', 'description', 'age']
     # success_url = '/cats/'
+    
+    def form_valid(self, form):
+      #attaches the user to the form
+      form.instance.user = self.request.user
+      return super().form_valid(form)
+    
 
 
 class CatUpdate(UpdateView):
@@ -43,11 +51,14 @@ class ToyDelete(DeleteView):
     model = Toy
     success_url = '/toys/'
     
+class Home(LoginView):
+    template_name = 'home.html'
+    
 # Create your views here.
 
 
-def home(request):
-    return render(request, 'home.html')
+# def home(request):
+#     return render(request, 'home.html')
 
 
 def about(request):
@@ -55,7 +66,7 @@ def about(request):
 
 
 def cat_index(request):
-    cats = Cat.objects.all()  # returns a list of all cats
+    cats = Cat.objects.filter(user=request.user)  # returns a list of all cats
     return render(request, 'cats/index.html', {'cats': cats})
 
 
@@ -90,3 +101,21 @@ def remove_toy(request, cat_id, toy_id):
     cat =  Cat.objects.get(id=cat_id)
     cat.toys.remove(toy_id)
     return redirect('cat-detail', cat_id=cat.id)
+
+def signup(request):
+    error_message = ''
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('cat_index')
+        
+        else:
+            error_message = 'Invalid sign up try again'
+    form = UserCreationForm()
+    context = {
+        'form': form, 
+        'error_message': error_message
+    }   
+    return render(request, 'signup.html', context)
