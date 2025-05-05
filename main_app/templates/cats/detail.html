@@ -1,29 +1,21 @@
-{% extends 'base.html' %} 
-{% load static %} 
-{% block head %}
+{% extends 'base.html' %} {% load static %} {% block head %}
 
 <!-- MCdatepicker CSS-->
-<link 
-href="https://cdn.jsdelivr.net/npm/mc-datepicker/dist/mc-calendar.min.css" 
-rel="stylesheet" />
-<link rel="stylesheet" href="{% static 'css/mcdp.css' %}">
+<link
+  href="https://cdn.jsdelivr.net/npm/mc-datepicker/dist/mc-calendar.min.css"
+  rel="stylesheet"
+/>
+<link rel="stylesheet" href="{% static 'css/mcdp.css' %}" />
 
 <!--MCdatepicker JS-->
 
-<script 
-src="https://cdn.jsdelivr.net/npm/mc-datepicker/dist/mc-calendar.min.js">
-</script>
+<script src="https://cdn.jsdelivr.net/npm/mc-datepicker/dist/mc-calendar.min.js"></script>
 <script defer src="{% static 'js/cat-detail.js' %}"></script>
-
 
 <!-- Existing CSS -->
 <link rel="stylesheet" href="{% static 'css/cats/cat-detail.css' %}" />
 
-
-
-{% endblock %}
-
-{% block content %}
+{% endblock %} {% block content %}
 <section class="cat-container">
   <div class="cat-img">
     <img src="{% static 'images/sk8r-boi-cat.svg' %}" alt="A skater boy cat" />
@@ -67,7 +59,11 @@ src="https://cdn.jsdelivr.net/npm/mc-datepicker/dist/mc-calendar.min.js">
       class="subsection-content"
       autocomplete="off"
     >
-      {% csrf_token %} {{ feeding_form.as_p }}
+      {% if cat.fed_for_today %}
+      <p class="fed">{{cat.name}} has been fed all their meals for today!</p>
+      {% else %}
+      <p class="unfed">{{cat.name}} might be hungry!</p>
+      {% endif %} {% csrf_token %} {{ feeding_form.as_p }}
       <button type="submit" class="btn submit">Add Feeding</button>
     </form>
 
@@ -103,50 +99,50 @@ src="https://cdn.jsdelivr.net/npm/mc-datepicker/dist/mc-calendar.min.js">
       <img src="{% static 'images/mouse.svg' %}" alt="A mouse" />
       <img src="{% static 'images/fish.svg' %}" alt="A fishy toy" />
     </div>
-  
+
     <!-- displaying a cat's toys -->
     <h3>{{ cat.name }}'s Toys</h3>
     <div class="subsection-content">
-      {% if cat.toys.count %} 
-        {% for toy in cat.toys.all %}
-          <div class="toy-container">
-            <div class="color-block" style="background-color: {{ toy.color }}"></div>
-            <a href="{% url 'toy-detail' toy.id %}">
-              <p>A {{ toy.color }} {{ toy.name }}</p>
-            </a>
-            <form action="{% url 'remove-toy' cat.id toy.id %}" method="post">
-              {% csrf_token %}
-              <button type="submit" class="btn btn-danger">Remove Toy</button>
-            </form>
-          </div>
-        {% endfor %} 
-      {% else %}
-        <p class="no-toys">{{cat.name}} doesn't have any toys!</p>
+      {% if cat.toys.count %} {% for toy in cat.toys.all %}
+      <div class="toy-container">
+        <div
+          class="color-block"
+          style="background-color: {{ toy.color }}"
+        ></div>
+        <a href="{% url 'toy-detail' toy.id %}">
+          <p>A {{ toy.color }} {{ toy.name }}</p>
+        </a>
+        <form action="{% url 'remove-toy' cat.id toy.id %}" method="post">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-danger">Remove Toy</button>
+        </form>
+      </div>
+      {% endfor %} {% else %}
+      <p class="no-toys">{{cat.name}} doesn't have any toys!</p>
       {% endif %}
     </div>
-  
+
     <h3>Available Toys</h3>
     <div class="subsection-content">
-      {% if toys.count %} 
-        {% for toy in toys.all %}
-          <div class="toy-container">
-            <div class="color-block" style="background-color: {{ toy.color }}"></div>
-            <a href="{% url 'toy-detail' toy.id %}">
-              <p>A {{ toy.color }} {{ toy.name }}</p>
-            </a>
-            <form action="{% url 'associate-toy' cat.id toy.id %}" method="post">
-              {% csrf_token %}
-              <button type="submit" class="btn submit">Give toy</button>
-            </form>
-          </div>
-        {% endfor %} 
-      {% else %}
-        <p class="all-toys">{{cat.name}} already has all the available toys 🥳</p>
+      {% if toys.count %} {% for toy in toys.all %}
+      <div class="toy-container">
+        <div
+          class="color-block"
+          style="background-color: {{ toy.color }}"
+        ></div>
+        <a href="{% url 'toy-detail' toy.id %}">
+          <p>A {{ toy.color }} {{ toy.name }}</p>
+        </a>
+        <form action="{% url 'associate-toy' cat.id toy.id %}" method="post">
+          {% csrf_token %}
+          <button type="submit" class="btn submit">Give toy</button>
+        </form>
+      </div>
+      {% endfor %} {% else %}
+      <p class="all-toys">{{cat.name}} already has all the available toys 🥳</p>
       {% endif %}
     </div>
   </section>
-  
-
 </div>
 
 {% endblock %}
